@@ -1,0 +1,104 @@
+﻿@model IEnumerable<GigHub.Models.Gig>
+@{ 
+    ViewBag.Title="Mine";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+<ul class="gigs">
+    @foreach (var gig in Model)
+    {
+    <li>
+
+
+
+        <div class="date">
+            <div class="month">@gig.DateTime.ToString("MMM")</div>
+            <div class="day">@gig.DateTime.ToString("d ")</div>
+        </div>
+        <div class="details">
+            <span class="artist">
+                @gig.Venue
+
+            </span>
+            <span class="genre">
+                @gig.Genre.Name
+
+            </span>
+            <div class="actions">
+                <a href="@Url.Action("Edit","Gigs",new {id=gig.Id })">edit</a>|
+                <a href="#" class="js-cancel-gig" data-gigid="@gig.Id">delete</a>
+
+            </div>
+
+
+
+        </div>
+     
+
+    </li>
+    }
+
+</ul>
+@section scripts{
+
+    <script>
+
+        $(document).ready(function () {
+
+            $(".js-cancel-gig").click(function (e) {
+
+
+
+                let dialog = bootbox.dialog({
+                                title: 'Confirm',
+                                message: "<p>Are You Sure You Want To Deactivate This Gig?</p>",
+                                size: 'medium',
+                                buttons: {
+                                cancel: {
+                                label: "No",
+                                className: 'btn-default',
+                                callback: function(){
+                                console.log('Custom cancel clicked');
+                                }
+                                },
+                               
+                                ok: {
+                                label: "Yes",
+                                className: 'btn-danger',
+                                callback: function() {
+                                                                         $.ajax({
+                        url: "/api/gigs/" + $(e.target).attr("data-gigid"),
+                        method: "DELETE"
+                    })
+                        .done(function () {
+                            console.log($(e.target).parents("li"));
+                            $(e.target).parents("li").fadeOut(function () {
+                                
+                            $(this).remove;
+                        });
+                    })
+                        .fail(function () {
+                        alert("Something gets Wrong!");
+                    });
+                                }
+                                }
+                                }
+                                });
+                
+
+                //bootbox.confirm('Are You Sure You Want To Deactivate This Gig?',
+                //    function (result) {
+
+
+                                
+                //                });
+   
+
+            });
+
+        });
+
+    </script>
+}
+

@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html> 
+<html lang="en-au">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GigHub - @ViewBag.Title</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@1,300;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    @Html.Partial("_Navbar");
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/lib")
+    @Scripts.Render("~/bundles/app")
+
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    @RenderSection("scripts", required: false)
+    <style>
+    </style>
+    <script type="text/template" id="notification-template">
+        <ul class="notifications">
+            <%
+            _.each(notifications,function(notification){
+            if(notification.type==1){
+            console.log("Notifi",notification)
+            %>
+            <li> <span class="highlight"><%= notification.gig.artist.name %> </span>Canceled his gig at  <%= notification.gig.venue %> at <%= moment(notification.gig.dateTime).format('D MMM HH:mm') %></li>
+            <%}%>
+            <%if(notification.type==2){%>
+            <%
+            var changes=[],original=[],newValues=[];
+            if(notification.originalVenu != notification.gig.venue){
+            changes.push("venue");
+            original.push(notification.originalVenu);
+            newValues.push(notification.gig.venue);
+            }
+            if(notification.originalDate != notification.gig.dateTime){
+            changes.push("date/time");
+            original.push(moment(notification.originalDate).format('D MMM HH:mm'));
+            newValues.push(moment(notification.gig.dateTime).format('D MMM HH:mm'))
+            }
+            %>
+            <li><span class="highlight"><%= notification.gig.artist.name %></span> Updated <%= changes.join(' and ') %> from <%= original.join(' / ') %> to <%= newValues.join(' / ') %> </li>
+            <%}%>
+
+
+            <%
+            console.log("original Values",original)
+            })%>
+        </ul>
+    </script>
+    <script>
+        $(document).ready(function () {
+            $.getJSON("/api/notifications", function (notifications) {
+                if (notifications.length == 0)
+                    return;
+                $(".js-notification")
+                    .text(notifications.length)
+                    .removeClass("hide")
+                    .addClass("animate__animated animate__bounce");
+                $(".notification-li").popover({
+                    html: true,
+                    title: "Notifications",
+                    content: function () {
+                        var compiled = _.template($("#notification-template").html())
+                        var html = compiled({ notifications: notifications })
+                        return html;
+                    },
+                    placement: "bottom",
+                    template: '<div class="popover popover-notification" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+
+                }).on('shown.bs.popover', function () {
+                    $.post("/api/notifications/markasread")
+
+                        .done(function () {
+                            $(".js-notification").text("")
+                                .addClass("hide");
+                        })
+                })
+
+
+            });
+
+        });
+    </script>
+</body>
+</html>

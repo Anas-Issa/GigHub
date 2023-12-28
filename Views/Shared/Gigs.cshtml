@@ -1,0 +1,86 @@
+﻿@model GigHub.ViewModels.HomeViewModel
+@{
+    ViewBag.Title = "Attending";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>@Model.Heading</h1>
+
+@using (Html.BeginForm("Search", "Home"))
+{
+<div class="form-group"  >
+
+
+
+    <div class="input-group"id="search-form" >
+        @Html.TextBoxFor(m => m.SearchTerm, new { @class = "form-control" })
+        <span class="input-group-addon" id="basic-addon2">
+        <i class="glyphicon glyphicon-search"></i>
+        </span>
+    </div>
+</div>
+}
+
+<ul class="gigs" id="gigs">
+    @foreach (var gig in Model.UpcomingGigs)
+    {
+        <li>
+
+
+
+            <div class="date">
+                <div class="month">@gig.DateTime.ToString("MMM")</div>
+                <div class="day">@gig.DateTime.ToString("d ")</div>
+            </div>
+            <div class="details">
+                <span class="artist">
+                    <a href="@Url.Action("Details","Home",new { id = gig.Id })">@gig.Artist.Name</a>
+
+                    @if (gig.IsCanceled)
+                    {
+                        <span class="label label-warning">Canceled</span>
+                    }
+                    @*@if (Model.ShowActions)
+                    {
+                        <button class="btn btn-link btn-sm js-follow" data-artistid="@gig.ArtistId">Follow?</button>
+
+                    }*@
+                </span>
+                <span class="genre">
+                    @gig.Genre.Name
+
+                </span>
+                @if (Model.ShowActions && !gig.IsCanceled)
+                {
+                    <button data-gigid="@gig.Id" class="btn @(Model.Attendances.Contains(gig.Id) ? "btn-info":"btn-default" )  btn-sm  js-toggle-attendence"> Going?</button>
+
+                }
+
+
+            </div>
+        </li>
+    }
+
+</ul>
+@section scripts {
+
+    <script>
+        $(document).ready(function () {
+
+            gigsController.init();
+
+                $(".js-follow").click(function (e) {
+                var button = $(e.target);
+                console.log(button.attr("data-artistid"));
+                $.post("/api/Followings/", { "FolloweeId": button.attr("data-artistid") })
+                    .done(function () {
+                        button.removeClass("btn-default")
+                            .addClass("btn-info")
+                            .text("following")
+                    })
+                    .fail(function () {
+                        alert("Something get wrong")
+                    })
+            })
+        })
+    </script>
+}

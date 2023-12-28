@@ -1,0 +1,179 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/*
+    Override Bootstrap
+*/
+.navbar-inverse {
+    background-color: #e1f01c;
+    border-color: #e1f01c;
+}
+    .navbar-inverse .navbar-nav > li > a {
+        color: white;
+    }
+    .navbar-inverse .navbar-brand{
+        color:white;
+    }
+        .navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
+            color: #b34f4f;
+            background-color: transparent;
+        }
+
+
+    .navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+        color: #f14c4c;
+        background-color: transparent;
+    }
+
+body {
+    font-family: 'Lato', sans-serif;
+    font-size: 17px;
+}
+/*
+
+.form-group{
+    margin-bottom:20px;
+}*/
+/*.form-control{
+    font-size:17px;
+    padding:20px 15px;
+    border-radius:9px;
+}
+.form-control:focus{
+    color:#808080;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+}*/
+ul.gigs {
+    list-style-type: none;
+}
+ul.myfollowees{
+    list-style-type:none;
+}
+.gigs > li {
+    position: relative;
+    margin-bottom: 25px;
+}
+.gigs > li .details{
+    position:absolute;
+    left:70px;
+    top:0;
+    padding:0px 15px;
+}
+.gigs > li .date{
+    background-color:red;
+    width:70px;
+    text-align:center;
+    color:white;
+}
+.gigs > li .date .month{
+    text-transform:uppercase;
+    font-weight:bold;
+    padding:2px 4px;
+
+}
+    .gigs > li .date .day {
+    background-color:#f7f7f7;
+    color:#333;
+    font-size:20px;
+    padding:6px 12px;
+    }
+    .gigs >li .details .artist{
+        display:block;
+        font-weight:bold;
+        font-size:17px;
+
+    }
+    .gigs > li .details .genre {
+        font-size: 12px;
+        font-weight: lighter;
+        /*display: initial;*/
+        display:block;
+        margin-bottom:4px;
+    }
+.btn-default:hover {
+    color: #333;
+    background-color: #f1c633;
+    border-color: #f1c633;
+}
+.btn-default:focus, .btn-default.focus {
+    color: #333;
+    background-color: #f1c633;
+    border-color: #f1c633;
+}
+.btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
+    color: #333;
+    background-color: #f1c633;
+    background-image: none;
+    border-color: #f1c633;
+}
+
+    .btn-default:active:hover, .btn-default.active:hover, .open > .dropdown-toggle.btn-default:hover, .btn-default:active:focus, .btn-default.active:focus, .open > .dropdown-toggle.btn-default:focus, .btn-default:active.focus, .btn-default.active.focus, .open > .dropdown-toggle.btn-default.focus {
+        color: #333;
+        background-color: #f1c633;
+        border-color: #f1c633;
+    }
+
+    .actions{
+        font-size:15px;
+    }
+.navbar-inverse .notification-li{       
+    position:relative;
+}
+    .navbar-inverse .notification-li .badge {
+        position: absolute;
+        top: 5px;
+        right: 0;
+        background-color: #286090;
+    }
+
+.popover{
+    box-shadow:none;
+    -webkit-box-shadow:none;
+}
+.notifications {
+    list-style: none;
+    padding-left: 0px;
+}
+
+ul.notifications > li {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
+    ul.notifications > li:last-child {
+        border-bottom: none;
+    }
+
+.popover-notification .popover-content {
+    padding: 0;
+}
+
+.highlight {
+    font-weight: bold;
+}
+#search-form{
+    width:300px;
+}

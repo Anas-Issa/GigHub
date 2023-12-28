@@ -1,0 +1,76 @@
+﻿@*@model GigHub.ViewModels.HomeViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+    <ul class="gigs">
+        @foreach (var gig in Model.UpcomingGigs)
+        {
+            <li>
+
+
+
+            <div class="date">
+                <div class="month">@gig.DateTime.ToString("MMM")</div>
+                <div class="day">@gig.DateTime.ToString("d ")</div>
+            </div>
+            <div class="details">
+                <span class="artist">
+                    @gig.Artist.Name
+                    @if (Model.ShowActions)
+                    {
+                        <button class="btn btn-link btn-sm js-follow" data-artistid="@gig.ArtistId">Follow?</button>
+
+                    }
+                </span>
+                <span class="genre">@gig.Genre.Name</span>
+                @if (Model.ShowActions)
+                {
+                    <button data-gigid="@gig.Id" class="btn btn-default btn-sm pull-right js-toggle-attendence"> Going?</button>
+
+                }
+
+            </div>
+                </li>
+        }
+
+    </ul>
+
+@section scripts {
+    
+    <script>
+        $(document).ready(function () {
+            console.log("Ready");
+    
+            $(".js-toggle-attendence").click(function (e) {
+                var button = $(e.target);
+                console.log(button.attr("data-gigid"));
+                $.post("/api/Attendences", {"gigid":button.attr("data-gigid")})
+                    .done(function () {
+                        button.removeClass("btn-default")
+                            .addClass("btn-info")
+                            .text("Going")
+                    })
+                    .fail(function () {
+                        alert("Something get wrong")
+                    })
+            })
+
+                        $(".js-follow").click(function (e) {
+                var button = $(e.target);
+                console.log(button.attr("data-artistid"));
+                $.post("/api/Followings", {"FolloweeId":button.attr("data-artistid")})
+                    .done(function () {
+                        button.removeClass("btn-default")
+                            .addClass("btn-info")
+                            .text("following")
+                    })
+                    .fail(function () {
+                        alert("Something get wrong")
+                    })
+            })
+        })
+    </script>
+    }*@
+
+<h1>Index</h1>
